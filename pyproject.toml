@@ -1,0 +1,17 @@
+[project]
+name = "g-league-scouting"
+version = "0.1.0"
+description = "G-League scouting platform using NBA and G-League data"
+authors = [
+    {name = "Julien Jaffré"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
