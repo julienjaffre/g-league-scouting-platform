@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: carbide-bonsai-466217-v2
+    schema: bronze
+    tables:
+      - name: kaggle_game_2021_2024
+      - name: kaggle_game_summary_2021_2024
+      - name: kaggle_line_score_2021_2024
+      - name: kaggle_other_stats_2021_2024
+      - name: kaggle_player_2021_2024
