@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: gold_games_per_team
+    description: "Nombre de matchs joués par équipe (saison 2023)"

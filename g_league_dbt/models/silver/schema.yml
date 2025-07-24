@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: silver_kaggle_game_filtered
+    description: "Jeux filtrés uniquement pour la saison 2023"
