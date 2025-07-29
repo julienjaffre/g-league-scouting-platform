@@ -5,8 +5,25 @@ sources:
     database: carbide-bonsai-466217-v2
     schema: bronze
     tables:
-      - name: kaggle_game_2021_2024
-      - name: kaggle_game_summary_2021_2024
-      - name: kaggle_line_score_2021_2024
-      - name: kaggle_other_stats_2021_2024
-      - name: kaggle_player_2021_2024
+      - name: advanced_2022_2024
+      - name: all_star_selections_2022_2024
+      - name: draft_pick_history_2022_2024
+      - name: end_of_season_teams_2022_2024
+      - name: end_of_season_teams__voting__2022_2024
+      - name: opponent_stats_per_100_poss_2022_2024
+      - name: opponent_stats_per_game_2022_2024
+      - name: opponent_totals_2022_2024
+      - name: per_100_poss_2022_2024
+      - name: per_36_minutes_2022_2024
+      - name: player_award_shares_2022_2024
+      - name: player_career_info_2022_2024
+      - name: player_per_game_2022_2024
+      - name: player_play_by_play_2022_2024
+      - name: player_season_info_2022_2024
+      - name: player_shooting_2022_2024
+      - name: player_totals_2022_2024
+      - name: team_abbrev_2022_2024
+      - name: team_stats_per_100_poss_2022_2024
+      - name: team_stats_per_game_2022_2024
+      - name: team_summaries_2022_2024
+      - name: team_totals_2022_2024

@@ -1,0 +1,175 @@
+season,lg,overall_pick,round,tm,player,player_id,college
+2024,NBA,1.0,1.0,ATL,Zaccharie Risacher,risacza01,
+2024,NBA,2.0,1.0,WAS,Alex Sarr,sarral01,
+2024,NBA,3.0,1.0,HOU,Reed Sheppard,sheppre01,Kentucky
+2024,NBA,4.0,1.0,SAS,Stephon Castle,castlst01,UConn
+2024,NBA,5.0,1.0,DET,Ron Holland,hollaro01,
+2024,NBA,6.0,1.0,CHO,Tidjane Salaün,salauti01,
+2024,NBA,7.0,1.0,POR,Donovan Clingan,clingdo01,UConn
+2024,NBA,8.0,1.0,SAS,Rob Dillingham,dilliro01,Kentucky
+2024,NBA,9.0,1.0,MEM,Zach Edey,edeyza01,Purdue
+2024,NBA,10.0,1.0,UTA,Cody Williams,willico04,Colorado
+2024,NBA,11.0,1.0,CHI,Matas Buzelis,buzelma01,
+2024,NBA,12.0,1.0,OKC,Nikola Topić,topicni01,
+2024,NBA,13.0,1.0,SAC,Devin Carter,cartede02,Providence
+2024,NBA,14.0,1.0,POR,Bub Carrington,carrica01,Pitt
+2024,NBA,15.0,1.0,MIA,Kel'el Ware,wareke01,Indiana
+2024,NBA,16.0,1.0,PHI,Jared McCain,mccaija01,Duke
+2024,NBA,17.0,1.0,LAL,Dalton Knecht,knechda01,Tennessee
+2024,NBA,18.0,1.0,ORL,Tristan Da Silva,dasiltr01,Colorado
+2024,NBA,19.0,1.0,TOR,Ja'Kobe Walter,walteja01,Baylor
+2024,NBA,20.0,1.0,CLE,Jaylon Tyson,tysonja01,California
+2024,NBA,21.0,1.0,NOP,Yves Missi,missiyv01,Baylor
+2024,NBA,22.0,1.0,PHO,DaRon Holmes,holmeda01,Dayton
+2024,NBA,23.0,1.0,MIL,AJ Johnson,johnsaj01,
+2024,NBA,24.0,1.0,NYK,Kyshawn George,georgky01,Miami (FL)
+2024,NBA,25.0,1.0,NYK,Pacome Dadiet,dadiepa01,
+2024,NBA,26.0,1.0,WAS,Dillon Jones,jonesdi01,Weber State
+2024,NBA,27.0,1.0,MIN,Terrence Shannon Jr.,shannte01,Illinois
+2024,NBA,28.0,1.0,DEN,Ryan Dunn,dunnry01,Virginia
+2024,NBA,29.0,1.0,UTA,Isaiah Collier,colliis01,USC
+2024,NBA,30.0,1.0,BOS,Baylor Scheierman,scheiba01,Creighton
+2024,NBA,31.0,2.0,TOR,Jonathan Mogbo,mogbojo01,San Francisco
+2024,NBA,32.0,2.0,UTA,Kyle Filipowski,filipky01,Duke
+2024,NBA,33.0,2.0,MIL,Tyler Smith,smithty02,
+2024,NBA,34.0,2.0,POR,Tyler Kolek,kolekty01,Marquette
+2024,NBA,35.0,2.0,SAS,Johnny Furphy,furphjo01,Kansas
+2024,NBA,36.0,2.0,IND,Juan Nunez,nunezju01,
+2024,NBA,37.0,2.0,MIN,Bobi Klintman,klintbo01,
+2024,NBA,38.0,2.0,NYK,Ajay Mitchell,mitchaj01,UC Santa Barbara
+2024,NBA,39.0,2.0,MEM,Jaylen Wells,wellsja01,Washington State
+2024,NBA,40.0,2.0,POR,Oso Ighodaro,ighodos01,Marquette
+2024,NBA,41.0,2.0,PHI,Adem Bona,bonaad01,UCLA
+2024,NBA,42.0,2.0,CHO,KJ Simpson,simpskj01,Colorado
+2024,NBA,43.0,2.0,MIA,Nikola Djurisic,djurini01,
+2024,NBA,44.0,2.0,HOU,Pelle Larsson,larsspe01,Arizona
+2024,NBA,45.0,2.0,SAC,Jamal Shead,sheadja01,Houston
+2024,NBA,46.0,2.0,LAC,Cam Christie,chrisca02,Minnesota
+2024,NBA,47.0,2.0,ORL,Antonio Reeves,reevean01,Kentucky
+2024,NBA,48.0,2.0,SAS,Harrison Ingram,ingraha01,UNC
+2024,NBA,49.0,2.0,IND,Tristen Newton,newtotr01,UConn
+2024,NBA,50.0,2.0,IND,Enrique Freeman,freemen01,University of Akron
+2024,NBA,51.0,2.0,NYK,Melvin Ajinça,ajincme01,
+2024,NBA,52.0,2.0,GSW,Quinten Post,postqu01,Boston College
+2024,NBA,53.0,2.0,DET,Cam Spencer,spencca01,UConn
+2024,NBA,54.0,2.0,BOS,Anton Watson,watsoan02,Gonzaga
+2024,NBA,55.0,2.0,LAL,Bronny James,jamesbr02,USC
+2024,NBA,56.0,2.0,PHO,Kevin McCullar Jr.,mcculke01,Kansas
+2024,NBA,57.0,2.0,MEM,Ulrich Chomche,chomcul01,
+2024,NBA,58.0,2.0,DAL,Ariel Hukporti,hukpoar01,
+2023,NBA,1.0,1.0,SAS,Victor Wembanyama,wembavi01,
+2023,NBA,2.0,1.0,CHO,Brandon Miller,millebr02,Alabama
+2023,NBA,3.0,1.0,POR,Scoot Henderson,hendesc01,
+2023,NBA,4.0,1.0,HOU,Amen Thompson,thompam01,
+2023,NBA,5.0,1.0,DET,Ausar Thompson,thompau01,
+2023,NBA,6.0,1.0,ORL,Anthony Black,blackan01,Arkansas
+2023,NBA,7.0,1.0,IND,Bilal Coulibaly,coulibi01,
+2023,NBA,8.0,1.0,WAS,Jarace Walker,walkeja02,Houston
+2023,NBA,9.0,1.0,UTA,Taylor Hendricks,hendrta01,Central Florida
+2023,NBA,10.0,1.0,DAL,Cason Wallace,wallaca01,Kentucky
+2023,NBA,11.0,1.0,ORL,Jett Howard,howarje01,Michigan
+2023,NBA,12.0,1.0,OKC,Dereck Lively II,livelde01,Duke
+2023,NBA,13.0,1.0,TOR,Gradey Dick,dickgr01,Kansas
+2023,NBA,14.0,1.0,NOP,Jordan Hawkins,hawkijo01,UConn
+2023,NBA,15.0,1.0,ATL,Kobe Bufkin,bufkiko01,Michigan
+2023,NBA,16.0,1.0,UTA,Keyonte George,georgke01,Baylor
+2023,NBA,17.0,1.0,LAL,Jalen Hood-Schifino,hoodsja01,Indiana
+2023,NBA,18.0,1.0,MIA,Jaime Jaquez Jr.,jaqueja01,UCLA
+2023,NBA,19.0,1.0,GSW,Brandin Podziemski,podzibr01,Santa Clara
+2023,NBA,20.0,1.0,HOU,Cam Whitmore,whitmca01,Villanova
+2023,NBA,21.0,1.0,BRK,Noah Clowney,clownno01,Alabama
+2023,NBA,22.0,1.0,BRK,Dariq Whitehead,whiteda01,Duke
+2023,NBA,23.0,1.0,POR,Kris Murray,murrakr01,Iowa
+2023,NBA,24.0,1.0,SAC,Olivier-Maxence Prosper,prospol01,Marquette
+2023,NBA,25.0,1.0,MEM,Marcus Sasser,sassema01,Houston
+2023,NBA,26.0,1.0,IND,Ben Sheppard,sheppbe01,Belmont
+2023,NBA,27.0,1.0,CHO,Nick Smith Jr.,smithni01,Arkansas
+2023,NBA,28.0,1.0,UTA,Brice Sensabaugh,sensabr01,Ohio State
+2023,NBA,29.0,1.0,IND,Julian Strawther,strawju01,Gonzaga
+2023,NBA,30.0,1.0,LAC,Kobe Brown,brownko01,Missouri
+2023,NBA,31.0,2.0,DET,James Nnaji,nnajija01,
+2023,NBA,32.0,2.0,IND,Jalen Pickett,pickeja02,Penn State
+2023,NBA,33.0,2.0,SAS,Leonard Miller,millele01,
+2023,NBA,34.0,2.0,CHO,Colby Jones,jonesco02,Xavier
+2023,NBA,35.0,2.0,BOS,Julian Phillips,phillju01,Tennessee
+2023,NBA,36.0,2.0,ORL,Andre Jackson Jr.,jacksan01,UConn
+2023,NBA,37.0,2.0,OKC,Hunter Tyson,tysonhu01,Clemson
+2023,NBA,38.0,2.0,SAC,Jordan Walsh,walshjo01,Arkansas
+2023,NBA,39.0,2.0,CHO,Mouhamed Gueye,gueyemo02,Washington State
+2023,NBA,40.0,2.0,DEN,Maxwell Lewis,lewisma05,Pepperdine
+2023,NBA,41.0,2.0,CHO,Amari Bailey,baileam01,UCLA
+2023,NBA,42.0,2.0,WAS,Tristan Vukcevic,vukcetr01,
+2023,NBA,43.0,2.0,POR,Rayan Rupert,ruperra01,
+2023,NBA,44.0,2.0,SAS,Sidy Cissoko,cissosi01,
+2023,NBA,45.0,2.0,MEM,GG Jackson II,jacksgg01,South Carolina
+2023,NBA,46.0,2.0,ATL,Seth Lundy,lundyse01,Penn State
+2023,NBA,47.0,2.0,LAL,Mojave King,kingmo01,
+2023,NBA,48.0,2.0,LAC,Jordan Miller,millejo02,Miami (FL)
+2023,NBA,49.0,2.0,CLE,Emoni Bates,batesem01,Eastern Michigan
+2023,NBA,50.0,2.0,OKC,Keyontae Johnson,johnske08,Kansas State
+2023,NBA,51.0,2.0,BRK,Jalen Wilson,wilsoja03,Kansas
+2023,NBA,52.0,2.0,PHO,Toumani Camara,camarto01,Dayton
+2023,NBA,53.0,2.0,MIN,Jaylen Clark,clarkja02,UCLA
+2023,NBA,54.0,2.0,SAC,Jalen Slawson,slawsja01,Furman University
+2023,NBA,55.0,2.0,IND,Isaiah Wong,wongis01,Miami (FL)
+2023,NBA,56.0,2.0,MEM,Tarik Biberovic,biberta01,
+2023,NBA,57.0,2.0,WAS,Trayce Jackson-Davis,jackstr02,Indiana
+2023,NBA,58.0,2.0,MIL,Chris Livingston,livinch01,Kentucky
+2022,NBA,1.0,1.0,ORL,Paolo Banchero,banchpa01,Duke
+2022,NBA,2.0,1.0,OKC,Chet Holmgren,holmgch01,Gonzaga
+2022,NBA,3.0,1.0,HOU,Jabari Smith Jr.,smithja05,Auburn
+2022,NBA,4.0,1.0,SAC,Keegan Murray,murrake02,Iowa
+2022,NBA,5.0,1.0,DET,Jaden Ivey,iveyja01,Purdue
+2022,NBA,6.0,1.0,IND,Bennedict Mathurin,mathube01,Arizona
+2022,NBA,7.0,1.0,POR,Shaedon Sharpe,sharpsh01,Kentucky
+2022,NBA,8.0,1.0,NOP,Dyson Daniels,daniedy01,
+2022,NBA,9.0,1.0,SAS,Jeremy Sochan,sochaje01,Baylor
+2022,NBA,10.0,1.0,WAS,Johnny Davis,davisjo06,Wisconsin
+2022,NBA,11.0,1.0,NYK,Ousmane Dieng,diengou01,
+2022,NBA,12.0,1.0,OKC,Jalen Williams,willija06,Santa Clara
+2022,NBA,13.0,1.0,CHO,Jalen Duren,durenja01,Memphis
+2022,NBA,14.0,1.0,CLE,Ochai Agbaji,agbajoc01,Kansas
+2022,NBA,15.0,1.0,CHO,Mark Williams,willima07,Duke
+2022,NBA,16.0,1.0,ATL,AJ Griffin,griffaj01,Duke
+2022,NBA,17.0,1.0,HOU,Tari Eason,easonta01,LSU
+2022,NBA,18.0,1.0,CHI,Dalen Terry,terryda01,Arizona
+2022,NBA,19.0,1.0,MIN,Jake LaRavia,laravja01,Wake Forest
+2022,NBA,20.0,1.0,SAS,Malaki Branham,branhma01,Ohio State
+2022,NBA,21.0,1.0,DEN,Christian Braun,braunch01,Kansas
+2022,NBA,22.0,1.0,MEM,Walker Kessler,kesslwa01,Auburn
+2022,NBA,23.0,1.0,PHI,David Roddy,roddyda01,Colorado State
+2022,NBA,24.0,1.0,MIL,MarJon Beauchamp,beaucma01,
+2022,NBA,25.0,1.0,SAS,Blake Wesley,weslebl01,Notre Dame
+2022,NBA,26.0,1.0,DAL,Wendell Moore Jr.,moorewe01,Duke
+2022,NBA,27.0,1.0,MIA,Nikola Jović,jovicni01,
+2022,NBA,28.0,1.0,GSW,Patrick Baldwin Jr.,baldwpa01,UW-Milwaukee
+2022,NBA,29.0,1.0,MEM,TyTy Washington Jr.,washity02,Kentucky
+2022,NBA,30.0,1.0,OKC,Peyton Watson,watsope01,UCLA
+2022,NBA,31.0,2.0,IND,Andrew Nembhard,nembhan01,Gonzaga
+2022,NBA,32.0,2.0,ORL,Caleb Houstan,houstca01,Michigan
+2022,NBA,33.0,2.0,TOR,Christian Koloko,kolokch01,Arizona
+2022,NBA,34.0,2.0,OKC,Jaylin Williams,willija07,Arkansas
+2022,NBA,35.0,2.0,LAL,Max Christie,chrisma02,Michigan State
+2022,NBA,36.0,2.0,POR,Gabriele Procida,prociga01,
+2022,NBA,37.0,2.0,SAC,Jaden Hardy,hardyja02,
+2022,NBA,38.0,2.0,SAS,Kennedy Chandler,chandke01,Tennessee
+2022,NBA,39.0,2.0,CLE,Khalifa Diop,diopkh01,
+2022,NBA,40.0,2.0,MIN,Bryce McGowens,mcgowbr01,Nebraska
+2022,NBA,41.0,2.0,NOP,E.J. Liddell,liddeej01,Ohio State
+2022,NBA,42.0,2.0,NYK,Trevor Keels,keelstr01,Duke
+2022,NBA,43.0,2.0,LAC,Moussa Diabaté,diabamo01,Michigan
+2022,NBA,44.0,2.0,ATL,Ryan Rollins,rolliry01,Toledo
+2022,NBA,45.0,2.0,CHO,Josh Minott,minotjo01,Memphis
+2022,NBA,46.0,2.0,DET,Ismael Kamagate,kamagis01,
+2022,NBA,47.0,2.0,MEM,Vince Williams Jr.,willivi01,VCU
+2022,NBA,48.0,2.0,MIN,Kendall Brown,brownke03,Baylor
+2022,NBA,49.0,2.0,CLE,Isaiah Mobley,mobleis01,USC
+2022,NBA,50.0,2.0,MIN,Matteo Spagnolo,spagnma01,
+2022,NBA,51.0,2.0,GSW,Tyrese Martin,martity01,UConn
+2022,NBA,52.0,2.0,NOP,Karlo Matković,matkoka01,
+2022,NBA,53.0,2.0,BOS,JD Davison,davisjd01,Alabama
+2022,NBA,54.0,2.0,WAS,Yannick Nzosa,nzosaya01,
+2022,NBA,55.0,2.0,GSW,Gui Santos,santogu01,
+2022,NBA,56.0,2.0,CLE,Luke Travers,travelu01,
+2022,NBA,57.0,2.0,POR,Jabari Walker,walkeja01,Colorado
+2022,NBA,58.0,2.0,IND,Hugo Besson,bessohu01,
