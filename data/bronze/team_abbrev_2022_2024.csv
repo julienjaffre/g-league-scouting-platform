@@ -1,0 +1,91 @@
+season,lg,team,abbreviation,playoffs
+2024,NBA,Atlanta Hawks,ATL,False
+2024,NBA,Boston Celtics,BOS,True
+2024,NBA,Brooklyn Nets,BRK,False
+2024,NBA,Chicago Bulls,CHI,False
+2024,NBA,Charlotte Hornets,CHO,False
+2024,NBA,Cleveland Cavaliers,CLE,True
+2024,NBA,Dallas Mavericks,DAL,True
+2024,NBA,Denver Nuggets,DEN,True
+2024,NBA,Detroit Pistons,DET,False
+2024,NBA,Golden State Warriors,GSW,False
+2024,NBA,Houston Rockets,HOU,False
+2024,NBA,Indiana Pacers,IND,True
+2024,NBA,Los Angeles Clippers,LAC,True
+2024,NBA,Los Angeles Lakers,LAL,True
+2024,NBA,Memphis Grizzlies,MEM,False
+2024,NBA,Miami Heat,MIA,True
+2024,NBA,Milwaukee Bucks,MIL,True
+2024,NBA,Minnesota Timberwolves,MIN,True
+2024,NBA,New Orleans Pelicans,NOP,True
+2024,NBA,New York Knicks,NYK,True
+2024,NBA,Oklahoma City Thunder,OKC,True
+2024,NBA,Orlando Magic,ORL,True
+2024,NBA,Philadelphia 76ers,PHI,True
+2024,NBA,Phoenix Suns,PHO,True
+2024,NBA,Portland Trail Blazers,POR,False
+2024,NBA,Sacramento Kings,SAC,False
+2024,NBA,San Antonio Spurs,SAS,False
+2024,NBA,Toronto Raptors,TOR,False
+2024,NBA,Utah Jazz,UTA,False
+2024,NBA,Washington Wizards,WAS,False
+2023,NBA,Atlanta Hawks,ATL,True
+2023,NBA,Boston Celtics,BOS,True
+2023,NBA,Brooklyn Nets,BRK,True
+2023,NBA,Chicago Bulls,CHI,False
+2023,NBA,Charlotte Hornets,CHO,False
+2023,NBA,Cleveland Cavaliers,CLE,True
+2023,NBA,Dallas Mavericks,DAL,False
+2023,NBA,Denver Nuggets,DEN,True
+2023,NBA,Detroit Pistons,DET,False
+2023,NBA,Golden State Warriors,GSW,True
+2023,NBA,Houston Rockets,HOU,False
+2023,NBA,Indiana Pacers,IND,False
+2023,NBA,Los Angeles Clippers,LAC,True
+2023,NBA,Los Angeles Lakers,LAL,True
+2023,NBA,Memphis Grizzlies,MEM,True
+2023,NBA,Miami Heat,MIA,True
+2023,NBA,Milwaukee Bucks,MIL,True
+2023,NBA,Minnesota Timberwolves,MIN,True
+2023,NBA,New Orleans Pelicans,NOP,False
+2023,NBA,New York Knicks,NYK,True
+2023,NBA,Oklahoma City Thunder,OKC,False
+2023,NBA,Orlando Magic,ORL,False
+2023,NBA,Philadelphia 76ers,PHI,True
+2023,NBA,Phoenix Suns,PHO,True
+2023,NBA,Portland Trail Blazers,POR,False
+2023,NBA,Sacramento Kings,SAC,True
+2023,NBA,San Antonio Spurs,SAS,False
+2023,NBA,Toronto Raptors,TOR,False
+2023,NBA,Utah Jazz,UTA,False
+2023,NBA,Washington Wizards,WAS,False
+2022,NBA,Atlanta Hawks,ATL,True
+2022,NBA,Boston Celtics,BOS,True
+2022,NBA,Brooklyn Nets,BRK,True
+2022,NBA,Chicago Bulls,CHI,True
+2022,NBA,Charlotte Hornets,CHO,False
+2022,NBA,Cleveland Cavaliers,CLE,False
+2022,NBA,Dallas Mavericks,DAL,True
+2022,NBA,Denver Nuggets,DEN,True
+2022,NBA,Detroit Pistons,DET,False
+2022,NBA,Golden State Warriors,GSW,True
+2022,NBA,Houston Rockets,HOU,False
+2022,NBA,Indiana Pacers,IND,False
+2022,NBA,Los Angeles Clippers,LAC,False
+2022,NBA,Los Angeles Lakers,LAL,False
+2022,NBA,Memphis Grizzlies,MEM,True
+2022,NBA,Miami Heat,MIA,True
+2022,NBA,Milwaukee Bucks,MIL,True
+2022,NBA,Minnesota Timberwolves,MIN,True
+2022,NBA,New Orleans Pelicans,NOP,True
+2022,NBA,New York Knicks,NYK,False
+2022,NBA,Oklahoma City Thunder,OKC,False
+2022,NBA,Orlando Magic,ORL,False
+2022,NBA,Philadelphia 76ers,PHI,True
+2022,NBA,Phoenix Suns,PHO,True
+2022,NBA,Portland Trail Blazers,POR,False
+2022,NBA,Sacramento Kings,SAC,False
+2022,NBA,San Antonio Spurs,SAS,False
+2022,NBA,Toronto Raptors,TOR,True
+2022,NBA,Utah Jazz,UTA,True
+2022,NBA,Washington Wizards,WAS,False

@@ -1,5 +1,21 @@
 version: 2
 
 models:
-  - name: gold_games_per_team
-    description: "Nombre de matchs joués par équipe (saison 2023)"
+
+  - name: gold_top_scorers
+    description: "Top marqueurs par saison avec efficacité et productivité"
+    columns:
+      - name: player
+        description: "Nom du joueur"
+      - name: season
+        description: "Saison NBA"
+      - name: team
+        description: "Équipe principale"
+      - name: total_points
+        description: "Total des points marqués"
+      - name: total_minutes
+        description: "Total des minutes jouées"
+      - name: pts_per_min
+        description: "Points marqués par minute"
+      - name: avg_fg_percent
+        description: "Précision moyenne au tir (field goal %)"
