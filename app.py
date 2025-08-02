@@ -4,29 +4,53 @@ import streamlit as st
 from google.cloud import bigquery
 import pandas as pd
 
-# === Configuration de la page ===
-st.set_page_config(page_title="G-League Dashboard", layout="wide")
+# Configure the page
+st.set_page_config(
+    page_title="G-League Scouting Platform",
+    page_icon="🏀",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# === Titre ===
-st.title("🔥 G-League - Meilleurs Scoreurs")
+# Main page content
+def main():
+    st.title("🏀 G-League Scouting Platform")
+    st.markdown("**Professional NBA player analysis for G-League recruitment**")
 
-# === Connexion à BigQuery avec région explicite ===
-client = bigquery.Client(location="US")  # Remplace "US" si ta table est ailleurs (ex: "europe-west1")
+    st.markdown("---")
 
-# === Requête vers la table gold ===
-QUERY = """
-    SELECT *
-    FROM `carbide-bonsai-466217-v2.scouting_dbt_gold.gold_top_scorers`
-    LIMIT 100
-"""
+    # Navigation instructions
+    col1, col2, col3 = st.columns(3)
 
-@st.cache_data
-def load_data():
-    return client.query(QUERY).to_dataframe()
+    with col1:
+        st.markdown("### 📊 Team Overview")
+        st.markdown("Analyze team performance and league standings")
+        st.info("Navigate using the sidebar ➡️")
 
-# === Chargement des données ===
-df = load_data()
+    with col2:
+        st.markdown("### 🔍 Player Search")
+        st.markdown("Find G-League target players with advanced filtering")
+        st.success("✅ 152 target players available")
 
-# === Affichage dans Streamlit ===
-st.subheader("🏀 Top 100 Scoreurs G-League (2022–2024)")
-st.dataframe(df, use_container_width=True)
+    with col3:
+        st.markdown("### 👤 Player Profiles")
+        st.markdown("Detailed individual player analysis and comparisons")
+        st.info("Coming soon...")
+
+    st.markdown("---")
+
+    # Quick stats
+    st.subheader("🎯 Platform Overview")
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric("Target Players", "152")
+    with col2:
+        st.metric("NBA Struggling", "68%")
+    with col3:
+        st.metric("Well-Rounded", "32%")
+    with col4:
+        st.metric("Available Players", "~70%")
+
+if __name__ == "__main__":
+    main()
