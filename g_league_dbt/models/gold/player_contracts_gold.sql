@@ -1,4 +1,4 @@
-WITH stats_raw AS (
+stats_raw AS (
     SELECT
         player,
         season,
@@ -6,6 +6,7 @@ WITH stats_raw AS (
         pos,
         age,
         g,
+        mp_per_game,  -- ADD THIS LINE
         CASE
             WHEN (fga_per_game + 0.44 * fta_per_game) > 0
             THEN pts_per_game / (2 * (fga_per_game + 0.44 * fta_per_game))
@@ -34,6 +35,7 @@ stats AS (
         team AS Team,
         pos AS Pos,
         age AS Age,
+        mp_per_game AS mp,  -- ADD THIS LINE
         ts_pct,
         pts,
         trb,
