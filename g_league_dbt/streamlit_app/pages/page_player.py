@@ -35,7 +35,7 @@ def load_player_data():
     
     query = """
     SELECT *
-    FROM `carbide-bonsai-466217-v2.scouting_dbt_bronze_scouting_dbt_bronze_gold.player_stats_gold`
+    FROM `carbide-bonsai-466217-v2.scouting_dbt_gold.player_stats_gold`
     ORDER BY season DESC, player
     """
     
