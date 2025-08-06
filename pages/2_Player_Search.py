@@ -1,24 +1,33 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-from google.cloud import bigquery
+import sys
 import os
+from google.cloud import bigquery
 
-st.set_page_config(page_title="G-League Player Search", page_icon="🔍", layout="wide")
+# Add the project root to the path to import utils
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from utils.bigquery_auth import get_bigquery_client, test_bigquery_connection
 
-# BigQuery connection
+# === Connexion BigQuery ===
 @st.cache_resource
-def init_bigquery():
-    key_path = "/home/maxence.garnier/dbt-credentials/dbt-scounting-key.json"
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_path
-    client = bigquery.Client()
-    return client
+def get_client():
+    """Get cached BigQuery client"""
+    return get_bigquery_client()
+
+# Update all your query functions to use:
+def your_query_function():
+    client = get_client()
+    if not client:
+        st.error("❌ Cannot connect to BigQuery. Please check authentication.")
+        return pd.DataFrame()
 
 @st.cache_data(ttl=3600)
 def load_player_data():
     """Load G-League target players from BigQuery with minutes per game"""
-    client = init_bigquery()
+    client = get_client()  # ← CHANGE THIS LINE
+    if not client:
+        st.error("❌ Cannot connect to BigQuery. Please check authentication.")
+        return pd.DataFrame()
     query = """
     WITH stats_raw AS (
         SELECT

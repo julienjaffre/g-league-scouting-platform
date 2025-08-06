@@ -1,19 +1,20 @@
 FROM python:3.12-slim
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
+# Copy and install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy application code
 COPY . .
 
-# For production, we'll use Cloud Run's default service account
-# No need to copy service account keys
-
+# Streamlit configuration for Cloud Run
 ENV PORT=8080
 ENV STREAMLIT_SERVER_PORT=8080
 ENV STREAMLIT_SERVER_ADDRESS=0.0.0.0

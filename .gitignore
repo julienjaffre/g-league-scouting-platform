@@ -238,3 +238,8 @@ dbt/dbt_packages/
 # Ne jamais versionner les credentials
 credentials/
 *.json
+
+# Environment files
+.env
+*.json
+dbt-credentials/
