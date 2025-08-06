@@ -1,0 +1,33 @@
+-- models/gold/team_stats_regular.sql
+SELECT
+  'regular' AS competition_type,
+  season,
+  team,
+  url,
+  gp,
+  w,
+  l,
+  win,
+  min,
+  pts,
+  fgm,
+  fga,
+  fg,
+  col_0_625,
+  `3pa`,
+  `3p`,
+  ftm,
+  fta,
+  ft,
+  oreb,
+  dreb,
+  reb,
+  ast,
+  tov,
+  stl,
+  blk,
+  blka,
+  pf,
+  pfd
+FROM {{ ref('bronze_team_stats_regular') }} -- référence au bronze !
+WHERE season IS NOT NULL -- (exemple, tu peux filtrer ou calculer ici)
