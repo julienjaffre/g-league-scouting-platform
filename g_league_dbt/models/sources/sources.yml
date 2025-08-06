@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: raw_nba_data
+    description: "Raw NBA player and team statistics data"
+    database: carbide-bonsai-466217-v2
+    schema: bronze
+    tables:
+      - name: player_per_game_2022_2024
+        description: "Player per-game statistics 2022-2024"
+      
+      - name: player_totals_2022_2024
+        description: "Player total statistics 2022-2024"
+      
+      - name: player_shooting_2022_2024
+        description: "Player shooting statistics 2022-2024"
+      
+      - name: player_season_info_2022_2024
+        description: "Player season information 2022-2024"
+      
+      - name: nba_contracts_complete
+        description: "NBA player contract information"
+      
+      - name: team_stats_per_game_2022_2024
+        description: "Team per-game statistics 2022-2024"

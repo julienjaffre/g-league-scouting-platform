@@ -1,0 +1,12 @@
+g_league_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      keyfile: "C:/Users/alexa/Downloads/carbide-bonsai-466217-v2-36c947402339.json"  # Chemin où vous avez sauvegardé le fichier JSON
+      project: carbide-bonsai-466217-v2
+      dataset: scouting_dbt
+      threads: 4
+      timeout_seconds: 300
+      location: US

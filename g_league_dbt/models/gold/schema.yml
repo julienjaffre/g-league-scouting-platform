@@ -1,24 +1,31 @@
 version: 2
 
 models:
+  - name: player_stats_gold
+    description: "Statistiques des joueurs NBA transformées pour la couche gold"
+    schema: scouting_dbt_gold
 
-  - name: gold_top_scorers
-    description: "Top marqueurs par saison avec efficacité et productivité"
     columns:
       - name: player
         description: "Nom du joueur"
+        tests:
+          - not_null
+      - name: player_id
+        description: "Identifiant unique du joueur"
+        tests:
+          - not_null
       - name: season
         description: "Saison NBA"
-      - name: team
-        description: "Équipe principale"
-      - name: total_points
-        description: "Total des points marqués"
-      - name: total_minutes
-        description: "Total des minutes jouées"
-      - name: pts_per_min
-        description: "Points marqués par minute"
-      - name: avg_fg_percent
-        description: "Précision moyenne au tir (field goal %)"
+        tests:
+          - not_null
+      - name: games_played
+        description: "Nombre de matchs joués"
+        tests:
+          - not_null
+      - name: points_per_game
+        description: "Points par match"
+        tests:
+          - not_null
 
   - name: gold_team_stats_regular
     description: "Statistiques finales par équipe pour la saison régulière G-League."
