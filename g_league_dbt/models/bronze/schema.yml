@@ -5,6 +5,8 @@ sources:
     database: carbide-bonsai-466217-v2
     schema: bronze
     tables:
+      - name: player_totals_2022_2024  # ← Le vrai nom !
+      - name: bronze_player_totals
       - name: advanced_2022_2024
       - name: all_star_selections_2022_2024
       - name: draft_pick_history_2022_2024
@@ -21,7 +23,6 @@ sources:
       - name: player_play_by_play_2022_2024
       - name: player_season_info_2022_2024
       - name: player_shooting_2022_2024
-      - name: player_totals_2022_2024
       - name: team_abbrev_2022_2024
       - name: team_stats_per_100_poss_2022_2024
       - name: team_stats_per_game_2022_2024
