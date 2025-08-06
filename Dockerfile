@@ -17,8 +17,9 @@ RUN pip install poetry
 RUN poetry config virtualenvs.create false \
   && poetry install --only main
 
-# Étape 6 : exposition du port utilisé par Streamlit
-EXPOSE 8501
+# Étape 6 : exposition du port attendu par Cloud Run
+ENV PORT=8080
+EXPOSE 8080
 
 # Étape 7 : commande de lancement de l'app
-CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "app.py", "--server.port=8080", "--server.address=0.0.0.0"]

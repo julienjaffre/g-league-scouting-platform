@@ -27,3 +27,8 @@ sources:
       - name: team_stats_per_game_2022_2024
       - name: team_summaries_2022_2024
       - name: team_totals_2022_2024
+      - name: team_stats_regular_clean
+      - name: team_stats_playoff
+      - name: player_stats_regular
+      - name: player_stats_playoff
+      - name: nba_contracts_complete
