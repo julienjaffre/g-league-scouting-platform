@@ -234,3 +234,7 @@ dbt/dbt_packages/
 
 # 🔧 VSCode spécifique
 .vscode/
+
+# Ne jamais versionner les credentials
+credentials/
+*.json

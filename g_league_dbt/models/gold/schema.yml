@@ -26,3 +26,187 @@ models:
         description: "Points par match"
         tests:
           - not_null
+
+  - name: gold_team_stats_regular
+    description: "Statistiques finales par équipe pour la saison régulière G-League."
+    columns:
+      - name: season
+        description: "Saison (ex: 2024-25)"
+      - name: team
+        description: "Nom de l'équipe"
+      - name: url
+        description: "Lien vers la page stats officielle de l'équipe"
+      - name: gp
+        description: "Nombre de matchs joués (regular)"
+      - name: w
+        description: "Nombre de victoires"
+      - name: l
+        description: "Nombre de défaites (ou ratio, voir le type réel dans la table)"
+      - name: win
+        description: "Pourcentage de victoires"
+      - name: min
+        description: "Minutes jouées en moyenne"
+      - name: pts
+        description: "Points marqués par match"
+      - name: fgm
+        description: "Field Goals Made"
+      - name: fga
+        description: "Field Goals Attempted"
+      - name: fg
+        description: "Pourcentage de réussite aux tirs"
+      - name: col_0_625
+        description: "Colonne inconnue, à renommer si besoin (vérifier le sens réel)"
+      - name: 3pa
+        description: "3 Points Tentés"
+      - name: 3p
+        description: "Pourcentage de réussite à 3 points"
+      - name: ftm
+        description: "Lancers francs marqués"
+      - name: fta
+        description: "Lancers francs tentés"
+      - name: ft
+        description: "Pourcentage de réussite aux lancers francs"
+      - name: oreb
+        description: "Rebonds offensifs"
+      - name: dreb
+        description: "Rebonds défensifs"
+      - name: reb
+        description: "Rebonds totaux"
+      - name: ast
+        description: "Passes décisives"
+      - name: tov
+        description: "Balles perdues"
+      - name: stl
+        description: "Interceptions"
+      - name: blk
+        description: "Contres"
+      - name: blka
+        description: "Contres subis"
+      - name: pf
+        description: "Fautes"
+      - name: pfd
+        description: "Fautes subies"
+
+  - name: gold_team_stats_playoff
+    description: "Statistiques finales par équipe pour les playoffs G-League."
+    columns:
+      - name: season
+        description: "Saison (ex: 2024-25)"
+      - name: rank
+        description: "Classement playoff (si dispo)"
+      - name: team
+        description: "Nom de l'équipe"
+      - name: url
+        description: "Lien vers la page stats officielle de l'équipe"
+      - name: gp
+        description: "Nombre de matchs joués (playoff)"
+      - name: w
+        description: "Nombre de victoires"
+      - name: l
+        description: "Nombre de défaites"
+      - name: win
+        description: "Pourcentage de victoires"
+      - name: min
+        description: "Minutes jouées en moyenne"
+      - name: pts
+        description: "Points marqués par match"
+      - name: fgm
+        description: "Field Goals Made"
+      - name: fga
+        description: "Field Goals Attempted"
+      - name: fg
+        description: "Pourcentage de réussite aux tirs"
+      - name: col_0_625
+        description: "Colonne inconnue, à renommer si besoin (vérifier le sens réel)"
+      - name: 3pa
+        description: "3 Points Tentés"
+      - name: 3p
+        description: "Pourcentage de réussite à 3 points"
+      - name: ftm
+        description: "Lancers francs marqués"
+      - name: fta
+        description: "Lancers francs tentés"
+      - name: ft
+        description: "Pourcentage de réussite aux lancers francs"
+      - name: oreb
+        description: "Rebonds offensifs"
+      - name: dreb
+        description: "Rebonds défensifs"
+      - name: reb
+        description: "Rebonds totaux"
+      - name: ast
+        description: "Passes décisives"
+      - name: tov
+        description: "Balles perdues"
+      - name: stl
+        description: "Interceptions"
+      - name: blk
+        description: "Contres"
+      - name: blka
+        description: "Contres subis"
+      - name: pf
+        description: "Fautes"
+      - name: pfd
+        description: "Fautes subies"
+
+  - name: gold_team_stats_all
+    description: "Toutes les stats par équipe, regular et playoff, avec le type de compétition"
+    columns:
+      - name: competition_type
+        description: "Type de compétition (regular/playoff)"
+      - name: season
+        description: "Saison, au format 2024-25"
+      - name: team
+        description: "Nom complet de l'équipe"
+      - name: url
+        description: "URL NBA Stats de l'équipe"
+      - name: gp
+        description: "Nombre de matchs joués"
+      - name: w
+        description: "Nombre de victoires"
+      - name: l
+        description: "Nombre de défaites"
+      - name: win
+        description: "Pourcentage de victoires"
+      - name: min
+        description: "Minutes moyennes par match"
+      - name: pts
+        description: "Points moyens par match"
+      - name: fgm
+        description: "Field Goals Made (Baskets marqués)"
+      - name: fga
+        description: "Field Goals Attempted (Tirs tentés)"
+      - name: fg
+        description: "Pourcentage de réussite aux tirs"
+      - name: col_0_625
+        description: "Statistique personnalisée col_0_625 (à clarifier si besoin)"
+      - name: 3pa
+        description: "3 Points Attempted (Tirs à 3pts tentés)"
+      - name: 3p
+        description: "Pourcentage de réussite à 3 points"
+      - name: ftm
+        description: "Lancers francs marqués"
+      - name: fta
+        description: "Lancers francs tentés"
+      - name: ft
+        description: "Pourcentage de réussite aux lancers francs"
+      - name: oreb
+        description: "Rebonds offensifs"
+      - name: dreb
+        description: "Rebonds défensifs"
+      - name: reb
+        description: "Rebonds totaux"
+      - name: ast
+        description: "Passes décisives"
+      - name: tov
+        description: "Ballons perdus"
+      - name: stl
+        description: "Interceptions"
+      - name: blk
+        description: "Contres"
+      - name: blka
+        description: "Contres subis"
+      - name: pf
+        description: "Fautes"
+      - name: pfd
+        description: "Fautes subies"
