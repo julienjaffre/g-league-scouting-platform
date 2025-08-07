@@ -5,30 +5,30 @@ import plotly.express as px
 from google.cloud import bigquery
 import numpy as np
 
-# Configuration de la page
+# Page configuration
 st.set_page_config(
-    page_title="Profils des Joueurs - G-League",
+    page_title="Player Profiles - G-League",
     page_icon="👤",
     layout="wide"
 )
 
-# Réutiliser la fonction de connexion BigQuery
+# Reuse BigQuery connection function
 @st.cache_resource
 def init_bigquery_client():
-    """Initialise le client BigQuery"""
+    """Initialize BigQuery client"""
     try:
         project_id = 'carbide-bonsai-466217-v2'
         client = bigquery.Client(project=project_id)
         client.query("SELECT 1").result()
         return client
     except Exception as e:
-        st.error(f"Erreur BigQuery: {e}")
+        st.error(f"BigQuery error: {e}")
         return None
 
-# Fonction de chargement des données
+# Data loading function
 @st.cache_data(ttl=3600)
 def load_player_data():
-    """Charge les données des joueurs depuis BigQuery"""
+    """Load player data from BigQuery"""
     client = init_bigquery_client()
     if client is None:
         return pd.DataFrame()
@@ -43,16 +43,16 @@ def load_player_data():
         df = client.query(query).to_dataframe()
         return df
     except Exception as e:
-        st.error(f"Erreur lors du chargement: {e}")
+        st.error(f"Loading error: {e}")
         return pd.DataFrame()
 
 def create_radar_chart(player_stats, league_avg_stats, player_name):
-    """Crée un graphique radar pour comparer un joueur aux moyennes de la ligue"""
+    """Create a radar chart to compare a player to league averages"""
     
-    categories = ['Points/Match', 'Rebonds/Match', 'Passes/Match', 
-                 'Efficacité', 'Impact Global']
+    categories = ['Points/Game', 'Rebounds/Game', 'Assists/Game', 
+                 'Efficiency', 'Overall Impact']
     
-    # Calculer l'efficacité et l'impact
+    # Calculate efficiency and impact
     player_efficiency = (player_stats['points_per_game'] + 
                         player_stats['rebounds_per_game'] + 
                         player_stats['assists_per_game']) / player_stats['games_played'].mean()
@@ -61,10 +61,10 @@ def create_radar_chart(player_stats, league_avg_stats, player_name):
                         league_avg_stats['rebounds_per_game'] + 
                         league_avg_stats['assists_per_game']) / league_avg_stats['games_played']
     
-    player_impact = player_stats['total_points'] / 1000  # Normaliser
+    player_impact = player_stats['total_points'] / 1000  # Normalize
     league_impact = league_avg_stats['total_points'] / 1000
     
-    # Valeurs du joueur
+    # Player values
     player_values = [
         player_stats['points_per_game'],
         player_stats['rebounds_per_game'],
@@ -73,7 +73,7 @@ def create_radar_chart(player_stats, league_avg_stats, player_name):
         player_impact
     ]
     
-    # Moyennes de la ligue
+    # League averages
     league_values = [
         league_avg_stats['points_per_game'],
         league_avg_stats['rebounds_per_game'],
@@ -82,10 +82,10 @@ def create_radar_chart(player_stats, league_avg_stats, player_name):
         league_impact
     ]
     
-    # Créer le graphique radar
+    # Create radar chart
     fig = go.Figure()
     
-    # Ajouter les données du joueur
+    # Add player data
     fig.add_trace(go.Scatterpolar(
         r=player_values,
         theta=categories,
@@ -95,12 +95,12 @@ def create_radar_chart(player_stats, league_avg_stats, player_name):
         fillcolor='rgba(255, 99, 71, 0.3)'
     ))
     
-    # Ajouter les moyennes de la ligue
+    # Add league averages
     fig.add_trace(go.Scatterpolar(
         r=league_values,
         theta=categories,
         fill='toself',
-        name='Moyenne Ligue',
+        name='League Average',
         line_color='rgb(100, 149, 237)',
         fillcolor='rgba(100, 149, 237, 0.1)'
     ))
@@ -112,51 +112,51 @@ def create_radar_chart(player_stats, league_avg_stats, player_name):
                 range=[0, max(max(player_values), max(league_values)) * 1.2]
             )),
         showlegend=True,
-        title=f"Profil Performance - {player_name}",
+        title=f"Performance Profile - {player_name}",
         height=500
     )
     
     return fig
 
 def create_performance_timeline(player_history_df):
-    """Crée un graphique temporel des performances du joueur"""
+    """Create a timeline chart of player performance"""
     
     fig = go.Figure()
     
-    # Points par match
+    # Points per game
     fig.add_trace(go.Scatter(
         x=player_history_df['season'],
         y=player_history_df['points_per_game'],
         mode='lines+markers',
-        name='Points/Match',
+        name='Points/Game',
         line=dict(color='rgb(255, 99, 71)', width=3),
         marker=dict(size=8)
     ))
     
-    # Rebonds par match
+    # Rebounds per game
     fig.add_trace(go.Scatter(
         x=player_history_df['season'],
         y=player_history_df['rebounds_per_game'],
         mode='lines+markers',
-        name='Rebonds/Match',
+        name='Rebounds/Game',
         line=dict(color='rgb(50, 205, 50)', width=3),
         marker=dict(size=8)
     ))
     
-    # Passes par match
+    # Assists per game
     fig.add_trace(go.Scatter(
         x=player_history_df['season'],
         y=player_history_df['assists_per_game'],
         mode='lines+markers',
-        name='Passes/Match',
+        name='Assists/Game',
         line=dict(color='rgb(100, 149, 237)', width=3),
         marker=dict(size=8)
     ))
     
     fig.update_layout(
-        title="Évolution des Performances par Saison",
-        xaxis_title="Saison",
-        yaxis_title="Statistiques par Match",
+        title="Performance Evolution by Season",
+        xaxis_title="Season",
+        yaxis_title="Per Game Statistics",
         hovermode='x unified',
         height=400
     )
@@ -164,130 +164,130 @@ def create_performance_timeline(player_history_df):
     return fig
 
 def calculate_advanced_metrics(player_stats, league_stats):
-    """Calcule des métriques avancées pour un joueur"""
+    """Calculate advanced metrics for a player"""
     
-    # Efficacité offensive
+    # Offensive efficiency
     offensive_rating = (player_stats['points_per_game'] * 100) / league_stats['points_per_game'].mean()
     
-    # Polyvalence (basée sur la distribution équilibrée des stats)
+    # Versatility (based on balanced distribution of stats)
     stats_std = np.std([player_stats['points_per_game'], 
                        player_stats['rebounds_per_game'], 
                        player_stats['assists_per_game']])
-    versatility = 100 - (stats_std * 10)  # Plus c'est équilibré, plus le score est élevé
+    versatility = 100 - (stats_std * 10)  # More balanced = higher score
     
-    # Impact total
+    # Total impact
     total_impact = (player_stats['total_points'] + 
                    player_stats['total_rebounds'] + 
                    player_stats['total_assists']) / player_stats['games_played']
     
-    # Régularité (basée sur les matchs joués)
+    # Consistency (based on games played)
     consistency = (player_stats['games_played'] / league_stats['games_played'].max()) * 100
     
     return {
-        'Efficacité Offensive': f"{offensive_rating:.1f}",
-        'Polyvalence': f"{versatility:.1f}",
-        'Impact Total/Match': f"{total_impact:.1f}",
-        'Régularité': f"{consistency:.1f}%",
-        'Matchs Joués': player_stats['games_played'],
-        'Minutes Totales (est.)': player_stats['games_played'] * 25  # Estimation
+        'Offensive Efficiency': f"{offensive_rating:.1f}",
+        'Versatility': f"{versatility:.1f}",
+        'Total Impact/Game': f"{total_impact:.1f}",
+        'Consistency': f"{consistency:.1f}%",
+        'Games Played': player_stats['games_played'],
+        'Total Minutes (est.)': player_stats['games_played'] * 25  # Estimation
     }
 
 def main():
-    st.title("👤 Profils Détaillés des Joueurs")
-    st.markdown("Analyse approfondie des performances individuelles avec visualisations avancées")
+    st.title("👤 Detailed Player Profiles")
+    st.markdown("In-depth analysis of individual performances with advanced visualizations")
     
-    # Chargement des données
-    with st.spinner("Chargement des données..."):
+    # Load data
+    with st.spinner("Loading data..."):
         df = load_player_data()
     
     if df.empty:
-        st.error("Impossible de charger les données")
+        st.error("Unable to load data")
         return
     
-    # Sélection du joueur
+    # Player selection
     col1, col2, col3 = st.columns([2, 1, 1])
     
     with col1:
         players = sorted(df['player'].unique())
         selected_player = st.selectbox(
-            "Sélectionner un joueur:",
+            "Select a player:",
             players,
-            help="Choisissez un joueur pour voir son profil détaillé"
+            help="Choose a player to view their detailed profile"
         )
     
     with col2:
-        # Filtre par saison pour la comparaison
+        # Season filter for comparison
         seasons = sorted(df['season'].unique(), reverse=True)
         selected_season = st.selectbox(
-            "Saison de référence:",
+            "Reference season:",
             seasons,
-            help="Saison utilisée pour les comparaisons"
+            help="Season used for comparisons"
         )
     
     with col3:
-        # Option de comparaison
+        # Comparison option
         compare_player = st.selectbox(
-            "Comparer avec:",
-            ['Aucun'] + [p for p in players if p != selected_player]
+            "Compare with:",
+            ['None'] + [p for p in players if p != selected_player]
         )
     
-    # Données du joueur sélectionné
+    # Selected player data
     player_data = df[df['player'] == selected_player]
     player_current_season = player_data[player_data['season'] == selected_season].iloc[0] if not player_data[player_data['season'] == selected_season].empty else player_data.iloc[0]
     
-    # Statistiques de la ligue pour la saison
+    # League statistics for the season
     league_stats = df[df['season'] == selected_season]
     league_avg = league_stats.mean(numeric_only=True)
     
-    # En-tête avec informations du joueur
+    # Header with player information
     st.markdown("---")
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.metric("Équipe", player_current_season['team'])
+        st.metric("Team", player_current_season['team'])
     with col2:
         st.metric("Position", player_current_season['pos'] if pd.notna(player_current_season['pos']) else "N/A")
     with col3:
-        st.metric("Saisons jouées", len(player_data))
+        st.metric("Seasons played", len(player_data))
     with col4:
-        st.metric("Matchs (saison)", player_current_season['games_played'])
+        st.metric("Games (season)", player_current_season['games_played'])
     
-    # Statistiques principales
-    st.markdown("### 📊 Statistiques Principales")
+    # Main statistics
+    st.markdown("### 📊 Main Statistics")
     col1, col2, col3 = st.columns(3)
     
     with col1:
         st.metric(
-            "Points par Match",
+            "Points per Game",
             f"{player_current_season['points_per_game']:.1f}",
-            f"{player_current_season['points_per_game'] - league_avg['points_per_game']:.1f} vs moy",
+            f"{player_current_season['points_per_game'] - league_avg['points_per_game']:.1f} vs avg",
             delta_color="normal"
         )
     
     with col2:
         st.metric(
-            "Rebonds par Match",
+            "Rebounds per Game",
             f"{player_current_season['rebounds_per_game']:.1f}",
-            f"{player_current_season['rebounds_per_game'] - league_avg['rebounds_per_game']:.1f} vs moy",
+            f"{player_current_season['rebounds_per_game'] - league_avg['rebounds_per_game']:.1f} vs avg",
             delta_color="normal"
         )
     
     with col3:
         st.metric(
-            "Passes par Match",
+            "Assists per Game",
             f"{player_current_season['assists_per_game']:.1f}",
-            f"{player_current_season['assists_per_game'] - league_avg['assists_per_game']:.1f} vs moy",
+            f"{player_current_season['assists_per_game'] - league_avg['assists_per_game']:.1f} vs avg",
             delta_color="normal"
         )
     
-    # Graphiques
-    st.markdown("### 📈 Visualisations")
+    # Charts
+    st.markdown("### 📈 Visualizations")
     
-    # Tabs pour organiser les visualisations
-    tab1, tab2, tab3 = st.tabs(["Graphique Radar", "Évolution Temporelle", "Comparaison Joueurs"])
+    # Tabs to organize visualizations
+    tab1, tab2, tab3 = st.tabs(["Radar Chart", "Time Evolution", "Player Comparison"])
     
     with tab1:
-        # Graphique radar
+        # Radar chart
         col1, col2 = st.columns([2, 1])
         
         with col1:
@@ -295,41 +295,41 @@ def main():
             st.plotly_chart(radar_fig, use_container_width=True)
         
         with col2:
-            st.markdown("#### 💡 Lecture du graphique")
+            st.markdown("#### 💡 Chart Reading")
             st.info("""
-            Le graphique radar compare les performances du joueur (rouge) 
-            aux moyennes de la ligue (bleu) sur 5 dimensions clés.
+            The radar chart compares player performance (red) 
+            to league averages (blue) across 5 key dimensions.
             
-            Plus la surface rouge est grande, plus le joueur 
-            surperforme par rapport à la moyenne.
+            The larger the red area, the more the player 
+            outperforms compared to the average.
             """)
     
     with tab2:
-        # Graphique temporel
+        # Timeline chart
         if len(player_data) > 1:
             timeline_fig = create_performance_timeline(player_data.sort_values('season'))
             st.plotly_chart(timeline_fig, use_container_width=True)
             
-            # Tableau récapitulatif
-            st.markdown("#### 📋 Détail par saison")
+            # Summary table
+            st.markdown("#### 📋 Season by Season Details")
             season_summary = player_data[['season', 'team', 'games_played', 
                                          'points_per_game', 'rebounds_per_game', 
                                          'assists_per_game']].sort_values('season', ascending=False)
             st.dataframe(season_summary, hide_index=True, use_container_width=True)
         else:
-            st.info("Historique non disponible (une seule saison de données)")
+            st.info("History not available (only one season of data)")
     
     with tab3:
-        # Comparaison avec un autre joueur
-        if compare_player != 'Aucun':
+        # Comparison with another player
+        if compare_player != 'None':
             compare_data = df[(df['player'] == compare_player) & (df['season'] == selected_season)]
             
             if not compare_data.empty:
                 compare_current = compare_data.iloc[0]
                 
-                # Créer un graphique de comparaison
+                # Create comparison chart
                 comparison_data = pd.DataFrame({
-                    'Statistique': ['Points/Match', 'Rebonds/Match', 'Passes/Match', 'Matchs joués'],
+                    'Statistic': ['Points/Game', 'Rebounds/Game', 'Assists/Game', 'Games played'],
                     selected_player: [
                         player_current_season['points_per_game'],
                         player_current_season['rebounds_per_game'],
@@ -345,23 +345,23 @@ def main():
                 })
                 
                 fig_compare = px.bar(
-                    comparison_data.melt(id_vars='Statistique', var_name='Joueur', value_name='Valeur'),
-                    x='Statistique',
-                    y='Valeur',
-                    color='Joueur',
+                    comparison_data.melt(id_vars='Statistic', var_name='Player', value_name='Value'),
+                    x='Statistic',
+                    y='Value',
+                    color='Player',
                     barmode='group',
-                    title=f"Comparaison: {selected_player} vs {compare_player}",
+                    title=f"Comparison: {selected_player} vs {compare_player}",
                     color_discrete_map={selected_player: 'rgb(255, 99, 71)', compare_player: 'rgb(100, 149, 237)'}
                 )
                 
                 st.plotly_chart(fig_compare, use_container_width=True)
             else:
-                st.warning(f"Pas de données pour {compare_player} en {selected_season}")
+                st.warning(f"No data for {compare_player} in {selected_season}")
         else:
-            st.info("Sélectionnez un joueur dans le menu déroulant pour comparer")
+            st.info("Select a player from the dropdown to compare")
     
-    # Métriques avancées
-    st.markdown("### 🎯 Métriques Avancées")
+    # Advanced metrics
+    st.markdown("### 🎯 Advanced Metrics")
     
     advanced_metrics = calculate_advanced_metrics(player_current_season, league_stats)
     
@@ -373,10 +373,10 @@ def main():
         with col:
             st.metric(metric_name, metric_value)
     
-    # Classements
-    st.markdown("### 🏆 Classements dans la Ligue")
+    # Rankings
+    st.markdown("### 🏆 League Rankings")
     
-    # Calculer les rangs
+    # Calculate ranks
     season_stats = df[df['season'] == selected_season].copy()
     season_stats['rank_points'] = season_stats['points_per_game'].rank(ascending=False)
     season_stats['rank_rebounds'] = season_stats['rebounds_per_game'].rank(ascending=False)
@@ -388,40 +388,40 @@ def main():
     
     with col1:
         st.metric(
-            "Classement Points",
+            "Points Ranking",
             f"#{int(player_ranks['rank_points'])}",
-            f"sur {len(season_stats)} joueurs"
+            f"out of {len(season_stats)} players"
         )
     
     with col2:
         st.metric(
-            "Classement Rebonds", 
+            "Rebounds Ranking", 
             f"#{int(player_ranks['rank_rebounds'])}",
-            f"sur {len(season_stats)} joueurs"
+            f"out of {len(season_stats)} players"
         )
     
     with col3:
         st.metric(
-            "Classement Passes",
+            "Assists Ranking",
             f"#{int(player_ranks['rank_assists'])}",
-            f"sur {len(season_stats)} joueurs"
+            f"out of {len(season_stats)} players"
         )
     
-    # Export du profil
-    st.markdown("### 💾 Export du Profil")
+    # Profile export
+    st.markdown("### 💾 Profile Export")
     
-    if st.button("📄 Générer rapport PDF"):
-        st.info("Fonctionnalité à venir : export PDF du profil complet du joueur")
+    if st.button("📄 Generate PDF report"):
+        st.info("Coming soon: complete player profile PDF export")
     
-    # Notes et observations
-    with st.expander("📝 Ajouter des notes sur ce joueur"):
+    # Notes and observations
+    with st.expander("📝 Add notes about this player"):
         notes = st.text_area(
-            "Notes d'observation:",
-            placeholder="Ajoutez vos observations sur les forces, faiblesses, potentiel du joueur...",
+            "Observation notes:",
+            placeholder="Add your observations about the player's strengths, weaknesses, potential...",
             height=150
         )
-        if st.button("Sauvegarder les notes"):
-            st.success("Notes sauvegardées (fonctionnalité à implémenter avec une base de données)")
+        if st.button("Save notes"):
+            st.success("Notes saved (feature to be implemented with database)")
 
 if __name__ == "__main__":
     main()
