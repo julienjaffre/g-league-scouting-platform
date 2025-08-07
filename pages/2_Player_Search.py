@@ -290,7 +290,7 @@ def main():
     tab1, tab2 = st.tabs(["📊 Overview", "📋 Detailed List"])
 
     with tab1:
-    # Clean and simple: just the 2 original charts
+        # Clean and simple: just the 2 original charts
         col1, col2 = st.columns(2)
 
         with col1:
@@ -314,9 +314,6 @@ def main():
             )
             st.plotly_chart(fig2, use_container_width=True)
 
-            # Row 2: New strategic visualizations
-            col3, col4 = st.columns(2)
-
 
     with tab2:
         # Detailed player table with enhanced column config
@@ -336,6 +333,34 @@ def main():
             'pts_percentile': 0, 'trb_percentile': 0, 'ast_percentile': 0
         })
 
+        # ADD PLAYER PROFILE SELECTION HERE - right after data preparation
+        st.markdown("---")
+        st.subheader("🔍 View Detailed Profile")
+
+        # Two-column layout for better UX
+        profile_col1, profile_col2 = st.columns([3, 1])
+
+        with profile_col1:
+            selected_for_profile = st.selectbox(
+                "Select a player to analyze:",
+                options=['Select a player...'] + sorted(list(display_df['Player'].unique())),
+                key="profile_redirect_select_2",  # Changed key
+                help="Choose a player to view their complete statistical profile and analysis"
+            )
+
+        with profile_col2:
+            st.markdown("<br>", unsafe_allow_html=True)  # Add some spacing
+            if selected_for_profile != 'Select a player...':
+                if st.button(f"🚀 Analyze {selected_for_profile}", type="primary", key="view_profile_btn", use_container_width=True):
+                    # Store the selected player in session state
+                    st.session_state.selected_player_from_search = selected_for_profile
+                    # Use st.switch_page to navigate directly
+                    st.switch_page("pages/3_Player_Profiles.py")
+            else:
+                st.button("🚀 Analyze Player", disabled=True, key="disabled_profile_btn", use_container_width=True)
+
+        st.markdown("---")
+
         # Add sorting options with user-friendly names
         sort_col1, sort_col2 = st.columns(2)
         with sort_col1:
@@ -350,11 +375,14 @@ def main():
                 'True Shooting %': 'ts_pct'
             }
 
+            # Continue with the rest of your existing code...
+
             sort_display = st.selectbox(
                 "Sort by:",
                 options=list(sort_options.keys()),
                 index=2,  # Default to "Points"
-                help="Choose which column to sort the results by"
+                help="Choose which column to sort the results by",
+                key="sort_display_select"
             )
 
             # Get the actual column name
@@ -364,7 +392,8 @@ def main():
             sort_order = st.selectbox(
                 "Order:",
                 options=['Descending', 'Ascending'],
-                help="Sort from highest to lowest (Descending) or lowest to highest (Ascending)"
+                help="Sort from highest to lowest (Descending) or lowest to highest (Ascending)",
+                key="sort_order_select"
             )
 
         ascending = sort_order == 'Ascending'
@@ -431,15 +460,16 @@ def main():
             }
         )
 
-        # Export functionality with help
-        if st.button("📥 Export Results (CSV)", help="Download filtered results as CSV file for further analysis"):
-            csv = display_df.to_csv(index=False)
-            st.download_button(
-                label="Download CSV",
-                data=csv,
-                file_name=f"g_league_targets_{len(display_df)}_players.csv",
-                mime="text/csv"
-            )
+    # Export functionality with help
+    if st.button("📥 Export Results (CSV)", help="Download filtered results as CSV file for further analysis", key="export_csv_btn"):
+        csv = display_df.to_csv(index=False)
+        st.download_button(
+            label="Download CSV",
+            data=csv,
+            file_name=f"g_league_targets_{len(display_df)}_players.csv",
+            mime="text/csv",
+            key="download_csv_btn"
+        )
 
 if __name__ == "__main__":
     main()

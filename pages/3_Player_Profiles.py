@@ -175,17 +175,96 @@ def main():
         st.error("Failed to load data.")
         return
 
+    # SIDEBAR with simplified filters and glossary
+    st.sidebar.header("👤 Season")
+
+    with st.spinner("Loading data..."):
+        df = load_player_data()
+
+    if df.empty:
+        st.error("Failed to load data.")
+        return
+
+    # SIDEBAR FILTERS - Only season filter
+    st.sidebar.subheader("Data Settings")
+
+    # Season filter only
+    seasons = sorted(df['season'].unique(), reverse=True)
+    season_filter = st.sidebar.selectbox(
+        "Available Seasons",
+        options=seasons,
+        help="Choose which seasons of data to include in the analysis"
+    )
+
+    # Filter dataframe by season only
+    filtered_df = df[df['season'] == season_filter]
+
+    # SIDEBAR GLOSSARY (keep the same)
+    st.sidebar.markdown("---")
+    with st.sidebar.expander("📚 Player Profile Glossary"):
+        st.markdown("""
+        **Core Statistics:**
+        - **Points/Game** = Average points scored per game
+        - **Rebounds/Game** = Average rebounds per game (offensive + defensive)
+        - **Assists/Game** = Average assists per game (playmaking ability)
+        - **Games Played** = Total games participated in during season
+
+        **Advanced Metrics:**
+        - **Offensive Efficiency** = Scoring rate compared to league average (100 = average)
+        - **Versatility** = How well-rounded a player is across different stats
+        - **Total Impact/Game** = Combined contribution per game (points + rebounds + assists)
+        - **Consistency** = Games played as % of team's total games
+
+        **Visualizations:**
+        - **Radar Chart** = Multi-dimensional performance comparison
+        - **Timeline** = Performance trends across multiple seasons
+        - **Player Comparison** = Head-to-head statistical comparison
+
+        **Rankings:**
+        - **League Rankings** = Position among all players in specific categories
+        - Lower rank number = better performance (Rank #1 = best)
+
+        **How to Use:**
+        - Select different seasons to see how player data changes
+        - Compare players from the same season
+        - Radar charts show strengths/weaknesses at a glance
+        - Timeline shows development/decline trends
+        """)
+
+    # Update the player selection to use filtered data
+    # Update the player selection to use filtered data
     col1, col2, col3 = st.columns([2, 1, 1])
     with col1:
-        players = sorted(df['player'].unique())
-        selected_player = st.selectbox("Select a player", players)
+        available_players = sorted(filtered_df['player'].unique())
+        if not available_players:
+            st.warning("No players match your filters. Try broadening your criteria.")
+            return
+
+        # Check if a player was selected from the search page
+        default_player_index = 0
+        if 'selected_player_from_search' in st.session_state:
+            if st.session_state.selected_player_from_search in available_players:
+                default_player_index = available_players.index(st.session_state.selected_player_from_search)
+                # Clear the session state after use
+                del st.session_state.selected_player_from_search
+
+        selected_player = st.selectbox(
+            "Select a player",
+            available_players,
+            index=default_player_index,
+            key="main_player_select"
+        )
 
     with col2:
-        seasons = sorted(df['season'].unique(), reverse=True)
-        selected_season = st.selectbox("Reference season", seasons)
+        seasons = sorted(filtered_df['season'].unique(), reverse=True)
+        selected_season = st.selectbox("Reference season", seasons, key="reference_season_select")
 
     with col3:
-        compare_player = st.selectbox("Compare with", ['None'] + [p for p in players if p != selected_player])
+        compare_player = st.selectbox(
+            "Compare with",
+            ['None'] + [p for p in available_players if p != selected_player],
+            key="compare_player_select"
+        )
 
     player_data = df[df['player'] == selected_player]
     player_current = player_data[player_data['season'] == selected_season].iloc[0] if not player_data[player_data['season'] == selected_season].empty else player_data.iloc[0]

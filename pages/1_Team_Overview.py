@@ -77,14 +77,65 @@ def get_team_stats(season, competition_type):
 # === UI Filters ===
 st.title("🏆 G-League Team Overview")
 
+# SIDEBAR with filters and glossary
+st.sidebar.header("🏆 Team Filters")
+
+# Add basic filters in sidebar instead of main area
 seasons, competitions = get_seasons_competitions()
 
 if len(seasons) > 0 and len(competitions) > 0:
-    col1, col2 = st.columns(2)
-    with col1:
-        selected_season = st.selectbox("Season", seasons)
-    with col2:
-        selected_comp = st.selectbox("Competition Type", competitions)
+    # Move season/competition selectors to sidebar
+    st.sidebar.subheader("Season & Competition")
+    selected_season = st.sidebar.selectbox(
+        "Season",
+        seasons,
+        help="Select the season year to analyze team performance"
+    )
+    selected_comp = st.sidebar.selectbox(
+        "Competition Type",
+        competitions,
+        help="Choose between regular season, playoffs, or other competition types"
+    )
+
+    # SIDEBAR GLOSSARY (adapted for team stats)
+    st.sidebar.markdown("---")
+    with st.sidebar.expander("📚 Team Stats Glossary"):
+        st.markdown("""
+        **Team Performance Stats:**
+        - **WIN** = Total wins in the season
+        - **GP** = Games played
+        - **PTS** = Average points scored per game
+        - **AST** = Average assists per game (team playmaking)
+        - **REB** = Average rebounds per game (team rebounding)
+        - **FG%** = Field goal percentage (shooting accuracy)
+        - **3P%** = Three-point percentage
+        - **FT%** = Free throw percentage
+
+        **Advanced Team Metrics:**
+        - **OFF RTG** = Offensive rating (points per 100 possessions)
+        - **DEF RTG** = Defensive rating (points allowed per 100 possessions)
+        - **NET RTG** = Net rating (offensive - defensive rating)
+        - **PACE** = Possessions per 48 minutes (game tempo)
+
+        **Competition Types:**
+        - **Regular Season** = Standard league games
+        - **Playoffs** = Post-season elimination games
+        - **Tournament** = Special competition format
+
+        **How to Use:**
+        - Compare teams across different statistical categories
+        - Higher offensive stats = better scoring teams
+        - Lower defensive stats = better defensive teams
+        - Net rating is often the best overall team metric
+        """)
+
+    # Remove the old column-based selectors and replace with sidebar versions
+    # The rest of your code stays the same, but remove this section:
+    # col1, col2 = st.columns(2)
+    # with col1:
+    #     selected_season = st.selectbox("Season", seasons)
+    # with col2:
+    #     selected_comp = st.selectbox("Competition Type", competitions)
 
     # === Load filtered data ===
     df = get_team_stats(selected_season, selected_comp)

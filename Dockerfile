@@ -23,4 +23,4 @@ ENV STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
 
 EXPOSE 8080
 
-CMD ["streamlit", "run", "main.py", "--server.port=8080", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "Main.py", "--server.port=8080", "--server.address=0.0.0.0"]
