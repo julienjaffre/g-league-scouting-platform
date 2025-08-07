@@ -1,52 +1,91 @@
 import streamlit as st
 
+# Page configuration
 st.set_page_config(
-    page_title="🏀 G-League Scouting Platform",
+    page_title="G-League Scouting Platform",
     page_icon="🏀",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# === Main content ===
+# Main title
 st.title("🏀 G-League Scouting Platform")
-st.markdown("**Professional NBA player analysis for G-League recruitment**")
+st.markdown("### A Data-Driven Approach to NBA Player Scouting")
 
-st.markdown("---")
+# Hero section
+st.markdown("""
+---
+**Welcome to the G-League Scouting Analytics Platform**
 
-# Navigation overview
-col1, col2, col3 = st.columns(3)
+This platform leverages advanced analytics to identify undervalued NBA players using G-League performance data,
+helping scouts and analysts make data-driven decisions.
+""")
 
-with col1:
-    st.markdown("### 📊 Team Overview")
-    st.markdown("Analyze team performance and league standings")
-    st.info("Navigate using the sidebar ➡️")
-
-with col2:
-    st.markdown("### 🔍 Player Search")
-    st.markdown("Find G-League target players with advanced filtering")
-    st.success("✅ 152 target players available")
-
-with col3:
-    st.markdown("### 👤 Player Profiles")
-    st.markdown("Detailed individual player analysis and comparisons")
-    st.info("Coming soon...")
-
-st.markdown("---")
-
-# Platform quick stats
-st.subheader("🎯 Platform Overview")
-col1, col2, col3, col4 = st.columns(4)
+# Navigation guide
+col1, col2 = st.columns(2)
 
 with col1:
-    st.metric("Target Players", "152")
-with col2:
-    st.metric("NBA Struggling", "68%")
-with col3:
-    st.metric("Well-Rounded", "32%")
-with col4:
-    st.metric("Available Players", "~70%")
+    st.markdown("""
+    #### 📊 **Navigation**
 
+    **📋 Presentation**
+    Project overview, methodology, and key insights
+
+    **🏀 Team Overview**
+    Team statistics, performance analysis, and comparisons
+    """)
+
+with col2:
+    st.markdown("""
+    #### 🔍 **Player Analytics**
+
+    **🔍 Player Search**
+    Advanced filtering and search capabilities
+
+    **👤 Player Profiles**
+    Detailed individual player analytics and projections
+    """)
+
+# Key features
 st.markdown("---")
+st.markdown("#### 🎯 **Key Features**")
+
+feature_col1, feature_col2, feature_col3 = st.columns(3)
+
+with feature_col1:
+    st.markdown("""
+    **📈 Advanced Analytics**
+    - Performance metrics
+    - Statistical modeling
+    - Trend analysis
+    """)
+
+with feature_col2:
+    st.markdown("""
+    **🎯 Player Identification**
+    - Undervalued talent detection
+    - Potential assessment
+    - Comparison tools
+    """)
+
+with feature_col3:
+    st.markdown("""
+    **📊 Data Integration**
+    - G-League statistics
+    - NBA performance data
+    - Real-time updates
+    """)
+
+# Footer
+st.markdown("---")
+st.markdown("""
+<div style='text-align: center; color: #666;'>
+    <p>Built with dbt, Google BigQuery, and Streamlit | Deployed on Cloud Run</p>
+</div>
+""", unsafe_allow_html=True)
+
+# Sidebar info
+st.sidebar.markdown("## 🏀 G-League Scouting")
 
 # Gamma presentation
 st.subheader("📽️ Presentation – G-League Scouting Platform")
