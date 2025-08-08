@@ -1,25 +1,26 @@
-# Étape 1 : image de base
 FROM python:3.12-slim
 
-# Étape 2 : installation des dépendances système
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-  build-essential \
-  && rm -rf /var/lib/apt/lists/*
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-# Étape 3 : définition du répertoire de travail
 WORKDIR /app
 
-# Étape 4 : copie du code source dans l'image
-COPY . /app
+# Copy and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Étape 5 : installation de Poetry et des dépendances
-RUN pip install poetry
-RUN poetry config virtualenvs.create false \
-  && poetry install --only main
+# Copy application code
+COPY . .
 
-# Étape 6 : exposition du port attendu par Cloud Run
+# Streamlit configuration for Cloud Run
 ENV PORT=8080
+ENV STREAMLIT_SERVER_PORT=8080
+ENV STREAMLIT_SERVER_ADDRESS=0.0.0.0
+ENV STREAMLIT_SERVER_HEADLESS=true
+ENV STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+
 EXPOSE 8080
 
-# Étape 7 : commande de lancement de l'app
-CMD ["streamlit", "run", "app.py", "--server.port=8080", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "Main.py", "--server.port=8080", "--server.address=0.0.0.0"]

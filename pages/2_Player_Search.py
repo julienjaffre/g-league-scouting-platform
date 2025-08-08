@@ -1,24 +1,34 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-from google.cloud import bigquery
+import sys
 import os
+from google.cloud import bigquery
+import plotly.express as px  # ← ADD THIS LINE
 
-st.set_page_config(page_title="G-League Player Search", page_icon="🔍", layout="wide")
+# Add the project root to the path to import utils
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from utils.bigquery_auth import get_bigquery_client, test_bigquery_connection
 
-# BigQuery connection
+# === Connexion BigQuery ===
 @st.cache_resource
-def init_bigquery():
-    key_path = "/home/maxence.garnier/dbt-credentials/dbt-scounting-key.json"
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_path
-    client = bigquery.Client()
-    return client
+def get_client():
+    """Get cached BigQuery client"""
+    return get_bigquery_client()
+
+# Update all your query functions to use:
+def your_query_function():
+    client = get_client()
+    if not client:
+        st.error("❌ Cannot connect to BigQuery. Please check authentication.")
+        return pd.DataFrame()
 
 @st.cache_data(ttl=3600)
 def load_player_data():
     """Load G-League target players from BigQuery with minutes per game"""
-    client = init_bigquery()
+    client = get_client()  # ← CHANGE THIS LINE
+    if not client:
+        st.error("❌ Cannot connect to BigQuery. Please check authentication.")
+        return pd.DataFrame()
     query = """
     WITH stats_raw AS (
         SELECT
@@ -280,7 +290,7 @@ def main():
     tab1, tab2 = st.tabs(["📊 Overview", "📋 Detailed List"])
 
     with tab1:
-    # Clean and simple: just the 2 original charts
+        # Clean and simple: just the 2 original charts
         col1, col2 = st.columns(2)
 
         with col1:
@@ -304,9 +314,6 @@ def main():
             )
             st.plotly_chart(fig2, use_container_width=True)
 
-            # Row 2: New strategic visualizations
-            col3, col4 = st.columns(2)
-
 
     with tab2:
         # Detailed player table with enhanced column config
@@ -326,6 +333,34 @@ def main():
             'pts_percentile': 0, 'trb_percentile': 0, 'ast_percentile': 0
         })
 
+        # ADD PLAYER PROFILE SELECTION HERE - right after data preparation
+        st.markdown("---")
+        st.subheader("🔍 View Detailed Profile")
+
+        # Two-column layout for better UX
+        profile_col1, profile_col2 = st.columns([3, 1])
+
+        with profile_col1:
+            selected_for_profile = st.selectbox(
+                "Select a player to analyze:",
+                options=['Select a player...'] + sorted(list(display_df['Player'].unique())),
+                key="profile_redirect_select_2",  # Changed key
+                help="Choose a player to view their complete statistical profile and analysis"
+            )
+
+        with profile_col2:
+            st.markdown("<br>", unsafe_allow_html=True)  # Add some spacing
+            if selected_for_profile != 'Select a player...':
+                if st.button(f"🚀 Analyze {selected_for_profile}", type="primary", key="view_profile_btn", use_container_width=True):
+                    # Store the selected player in session state
+                    st.session_state.selected_player_from_search = selected_for_profile
+                    # Use st.switch_page to navigate directly
+                    st.switch_page("pages/3_Player_Profiles.py")
+            else:
+                st.button("🚀 Analyze Player", disabled=True, key="disabled_profile_btn", use_container_width=True)
+
+        st.markdown("---")
+
         # Add sorting options with user-friendly names
         sort_col1, sort_col2 = st.columns(2)
         with sort_col1:
@@ -340,11 +375,14 @@ def main():
                 'True Shooting %': 'ts_pct'
             }
 
+            # Continue with the rest of your existing code...
+
             sort_display = st.selectbox(
                 "Sort by:",
                 options=list(sort_options.keys()),
                 index=2,  # Default to "Points"
-                help="Choose which column to sort the results by"
+                help="Choose which column to sort the results by",
+                key="sort_display_select"
             )
 
             # Get the actual column name
@@ -354,7 +392,8 @@ def main():
             sort_order = st.selectbox(
                 "Order:",
                 options=['Descending', 'Ascending'],
-                help="Sort from highest to lowest (Descending) or lowest to highest (Ascending)"
+                help="Sort from highest to lowest (Descending) or lowest to highest (Ascending)",
+                key="sort_order_select"
             )
 
         ascending = sort_order == 'Ascending'
@@ -421,15 +460,16 @@ def main():
             }
         )
 
-        # Export functionality with help
-        if st.button("📥 Export Results (CSV)", help="Download filtered results as CSV file for further analysis"):
-            csv = display_df.to_csv(index=False)
-            st.download_button(
-                label="Download CSV",
-                data=csv,
-                file_name=f"g_league_targets_{len(display_df)}_players.csv",
-                mime="text/csv"
-            )
+    # Export functionality with help
+    if st.button("📥 Export Results (CSV)", help="Download filtered results as CSV file for further analysis", key="export_csv_btn"):
+        csv = display_df.to_csv(index=False)
+        st.download_button(
+            label="Download CSV",
+            data=csv,
+            file_name=f"g_league_targets_{len(display_df)}_players.csv",
+            mime="text/csv",
+            key="download_csv_btn"
+        )
 
 if __name__ == "__main__":
     main()
