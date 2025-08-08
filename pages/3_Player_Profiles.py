@@ -3,6 +3,12 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 from google.cloud import bigquery
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.lib import colors
+import io
 import numpy as np
 import sys
 import os
@@ -49,70 +55,116 @@ def load_player_data():
         st.error(f"❌ Error while loading: {e}")
         return pd.DataFrame()
 
-def create_radar_chart(player_stats, league_avg_stats, player_name):
-    categories = ['Points/Game', 'Rebounds/Game', 'Assists/Game', 'Efficiency', 'Total Impact']
+def create_radar_chart(player_stats, league_stats, player_name):
+    """Create a min-max normalized radar chart"""
 
-    player_efficiency = (
-        player_stats['points_per_game'] +
-        player_stats['rebounds_per_game'] +
-        player_stats['assists_per_game']
-    ) / player_stats['games_played'].mean()
+    categories = ['Scoring', 'Rebounding', 'Playmaking', 'Availability', 'Production']
 
-    league_efficiency = (
-        league_avg_stats['points_per_game'] +
-        league_avg_stats['rebounds_per_game'] +
-        league_avg_stats['assists_per_game']
-    ) / league_avg_stats['games_played']
+    def normalize_to_scale(player_val, min_val, avg_val, max_val):
+        """Normalize value to 0-100 scale where 50 = average"""
+        if max_val == min_val:
+            return 50
 
-    player_impact = player_stats['total_points'] / 1000
-    league_impact = league_avg_stats['total_points'] / 1000
+        if player_val <= avg_val:
+            # Scale from 0-50 (min to average)
+            return 50 * (player_val - min_val) / (avg_val - min_val) if avg_val != min_val else 50
+        else:
+            # Scale from 50-100 (average to max)
+            return 50 + 50 * (player_val - avg_val) / (max_val - avg_val) if max_val != avg_val else 50
 
-    player_values = [
+    # Get league stats for normalization
+    scoring_norm = normalize_to_scale(
         player_stats['points_per_game'],
-        player_stats['rebounds_per_game'],
-        player_stats['assists_per_game'],
-        player_efficiency,
-        player_impact
-    ]
+        league_stats['points_per_game'].min(),
+        league_stats['points_per_game'].mean(),
+        league_stats['points_per_game'].max()
+    )
 
-    league_values = [
-        league_avg_stats['points_per_game'],
-        league_avg_stats['rebounds_per_game'],
-        league_avg_stats['assists_per_game'],
-        league_efficiency,
-        league_impact
-    ]
+    rebounding_norm = normalize_to_scale(
+        player_stats['rebounds_per_game'],
+        league_stats['rebounds_per_game'].min(),
+        league_stats['rebounds_per_game'].mean(),
+        league_stats['rebounds_per_game'].max()
+    )
+
+    playmaking_norm = normalize_to_scale(
+        player_stats['assists_per_game'],
+        league_stats['assists_per_game'].min(),
+        league_stats['assists_per_game'].mean(),
+        league_stats['assists_per_game'].max()
+    )
+
+    availability_norm = normalize_to_scale(
+        player_stats['games_played'],
+        league_stats['games_played'].min(),
+        league_stats['games_played'].mean(),
+        min(league_stats['games_played'].max(), 82)  # Cap at 82 games
+    )
+
+    # Total production
+    player_production = player_stats['total_points'] + player_stats['total_rebounds'] + player_stats['total_assists']
+    league_production = league_stats['total_points'] + league_stats['total_rebounds'] + league_stats['total_assists']
+
+    production_norm = normalize_to_scale(
+        player_production,
+        league_production.min(),
+        league_production.mean(),
+        league_production.max()
+    )
+
+    player_values = [scoring_norm, rebounding_norm, playmaking_norm, availability_norm, production_norm]
+    league_values = [50, 50, 50, 50, 50]  # Average baseline
 
     fig = go.Figure()
+
+    # Player trace
     fig.add_trace(go.Scatterpolar(
         r=player_values,
         theta=categories,
         fill='toself',
         name=player_name,
-        line_color='rgb(255, 99, 71)',
-        fillcolor='rgba(255, 99, 71, 0.3)'
+        line=dict(color='rgb(255, 99, 71)', width=3),
+        fillcolor='rgba(255, 99, 71, 0.25)',
+        marker=dict(size=8)
     ))
+
+    # League average reference
     fig.add_trace(go.Scatterpolar(
         r=league_values,
         theta=categories,
         fill='toself',
         name='League Average',
-        line_color='rgb(100, 149, 237)',
-        fillcolor='rgba(100, 149, 237, 0.1)'
+        line=dict(color='rgb(100, 149, 237)', width=2, dash='dash'),
+        fillcolor='rgba(100, 149, 237, 0.1)',
+        marker=dict(size=6)
     ))
 
     fig.update_layout(
-        polar=dict(radialaxis=dict(visible=True, range=[0, max(max(player_values), max(league_values)) * 1.2])),
+        polar=dict(
+            radialaxis=dict(
+                visible=True,
+                range=[0, 100],
+                tickvals=[0, 25, 50, 75, 100],
+                ticktext=['Min', 'Below Avg', 'Average', 'Above Avg', 'Max'],
+                gridcolor='lightgray'
+            )
+        ),
         showlegend=True,
         title=f"Performance Profile - {player_name}",
-        height=500
+        height=500,
+        font=dict(size=12)
     )
+
     return fig
 
 def create_performance_timeline(player_history_df):
+    # Convert season to integer to avoid decimals
+    player_history_df = player_history_df.copy()
+    player_history_df['season_clean'] = player_history_df['season'].astype(int)
+
     fig = go.Figure()
     fig.add_trace(go.Scatter(
-        x=player_history_df['season'],
+        x=player_history_df['season_clean'],  # Use clean season values
         y=player_history_df['points_per_game'],
         mode='lines+markers',
         name='Points/Game',
@@ -120,7 +172,7 @@ def create_performance_timeline(player_history_df):
         marker=dict(size=8)
     ))
     fig.add_trace(go.Scatter(
-        x=player_history_df['season'],
+        x=player_history_df['season_clean'],  # Use clean season values
         y=player_history_df['rebounds_per_game'],
         mode='lines+markers',
         name='Rebounds/Game',
@@ -128,7 +180,7 @@ def create_performance_timeline(player_history_df):
         marker=dict(size=8)
     ))
     fig.add_trace(go.Scatter(
-        x=player_history_df['season'],
+        x=player_history_df['season_clean'],  # Use clean season values
         y=player_history_df['assists_per_game'],
         mode='lines+markers',
         name='Assists/Game',
@@ -140,28 +192,43 @@ def create_performance_timeline(player_history_df):
         xaxis_title="Season",
         yaxis_title="Stats per Game",
         hovermode='x unified',
-        height=400
+        height=400,
+        xaxis=dict(
+            tickmode='array',
+            tickvals=[2022, 2023, 2024],  # Force specific tick values
+            ticktext=['2022', '2023', '2024']  # Clean labels
+        )
     )
     return fig
 
 def calculate_advanced_metrics(player_stats, league_stats):
-    offensive_rating = (player_stats['points_per_game'] * 100) / league_stats['points_per_game'].mean()
-    stats_std = np.std([
-        player_stats['points_per_game'],
-        player_stats['rebounds_per_game'],
-        player_stats['assists_per_game']
-    ])
-    versatility = 100 - (stats_std * 10)
-    total_impact = (player_stats['total_points'] + player_stats['total_rebounds'] + player_stats['total_assists']) / player_stats['games_played']
-    consistency = (player_stats['games_played'] / league_stats['games_played'].max()) * 100
+    """Calculate metrics based on actually available data"""
+
+    # Games availability (health/reliability)
+    max_games = league_stats['games_played'].max() if len(league_stats) > 0 else 82
+    availability = (player_stats['games_played'] / max_games) * 100
+
+    # Per-game efficiency (points per minute estimate)
+    # Assuming ~25 minutes per game average
+    estimated_minutes_total = player_stats['games_played'] * 25
+    points_per_minute = player_stats['total_points'] / estimated_minutes_total if estimated_minutes_total > 0 else 0
+
+    # Total production
+    total_production = player_stats['total_points'] + player_stats['total_rebounds'] + player_stats['total_assists']
+    production_per_game = total_production / player_stats['games_played'] if player_stats['games_played'] > 0 else 0
+
+    # League percentile rankings
+    points_percentile = (league_stats['points_per_game'] < player_stats['points_per_game']).mean() * 100
+    rebounds_percentile = (league_stats['rebounds_per_game'] < player_stats['rebounds_per_game']).mean() * 100
+    assists_percentile = (league_stats['assists_per_game'] < player_stats['assists_per_game']).mean() * 100
 
     return {
-        'Offensive Efficiency': f"{offensive_rating:.1f}",
-        'Versatility': f"{versatility:.1f}",
-        'Total Impact/Game': f"{total_impact:.1f}",
-        'Consistency': f"{consistency:.1f}%",
         'Games Played': player_stats['games_played'],
-        'Estimated Minutes': player_stats['games_played'] * 25
+        'Availability': f"{availability:.1f}%",
+        'Total Production/Game': f"{production_per_game:.1f}",
+        'Points Percentile': f"{points_percentile:.0f}th",
+        'Rebounds Percentile': f"{rebounds_percentile:.0f}th",
+        'Assists Percentile': f"{assists_percentile:.0f}th"
     }
 
 def main():
@@ -199,7 +266,7 @@ def main():
     # Filter dataframe by season only
     filtered_df = df[df['season'] == season_filter]
 
-    # SIDEBAR GLOSSARY (keep the same)
+    # SIDEBAR GLOSSARY (updated to match current implementation)
     st.sidebar.markdown("---")
     with st.sidebar.expander("📚 Player Profile Glossary"):
         st.markdown("""
@@ -209,26 +276,41 @@ def main():
         - **Assists/Game** = Average assists per game (playmaking ability)
         - **Games Played** = Total games participated in during season
 
-        **Advanced Metrics:**
-        - **Offensive Efficiency** = Scoring rate compared to league average (100 = average)
-        - **Versatility** = How well-rounded a player is across different stats
-        - **Total Impact/Game** = Combined contribution per game (points + rebounds + assists)
-        - **Consistency** = Games played as % of team's total games
+        **Radar Chart Dimensions:**
+        - **Scoring** = Points per game vs league min/max/average
+        - **Rebounding** = Rebounds per game vs league min/max/average
+        - **Playmaking** = Assists per game vs league min/max/average
+        - **Availability** = Games played vs league min/max/average (capped at 82)
+        - **Production** = Total production vs league min/max/average
+
+        **Radar Chart Scale:**
+        - **0-25 = Min to Below Average** (Red zone - needs improvement)
+        - **25-50 = Below Average to Average** (Yellow zone - developing)
+        - **50 = League Average** (Blue dashed line baseline)
+        - **50-75 = Average to Above Average** (Green zone - solid)
+        - **75-100 = Above Average to Maximum** (Elite zone - outstanding)
 
         **Visualizations:**
-        - **Radar Chart** = Multi-dimensional performance comparison
-        - **Timeline** = Performance trends across multiple seasons
+        - **Radar Chart** = 5-dimension performance profile with min-max scaling
+        - **Timeline** = Performance trends across seasons (2022, 2023, 2024)
         - **Player Comparison** = Head-to-head statistical comparison
 
-        **Rankings:**
-        - **League Rankings** = Position among all players in specific categories
-        - Lower rank number = better performance (Rank #1 = best)
+        **Advanced Metrics:**
+        - **Games Played** = Total games in selected season
+        - **Availability** = Games played as % of maximum possible games (health indicator)
+        - **Total Production/Game** = Combined stats per game (points + rebounds + assists)
+        - **Points/Rebounds/Assists Percentile** = Performance rank vs all players (higher = better)
+
+        **League Rankings:**
+        - **Points/Rebounds/Assists Rank** = Position among all players in category
+        - **Lower rank number = better performance** (Rank #1 = best in league)
 
         **How to Use:**
-        - Select different seasons to see how player data changes
-        - Compare players from the same season
-        - Radar charts show strengths/weaknesses at a glance
-        - Timeline shows development/decline trends
+        - **Season filter** controls all data displayed
+        - **Radar chart** shows relative strengths/weaknesses at a glance
+        - **Timeline** reveals development/decline patterns
+        - **Percentiles** show how player compares to entire league
+        - **PDF export** generates comprehensive player report
         """)
 
     # Update the player selection to use filtered data
@@ -288,12 +370,7 @@ def main():
     tab1, tab2, tab3 = st.tabs(["Radar Chart", "Timeline", "Player Comparison"])
 
     with tab1:
-        col1, col2 = st.columns([2, 1])
-        with col1:
-            st.plotly_chart(create_radar_chart(player_current, league_avg, selected_player), use_container_width=True)
-        with col2:
-            st.markdown("#### ℹ️ Chart Reading Guide")
-            st.info("This radar chart compares the player's performance (red) to the league average (blue) across 5 key dimensions.")
+        st.plotly_chart(create_radar_chart(player_current, league_stats, selected_player), use_container_width=True)
 
     with tab2:
         if len(player_data) > 1:
@@ -358,12 +435,103 @@ def main():
 
     st.markdown("### 💾 Export Player Profile")
     if st.button("📄 Generate PDF Report"):
-        st.info("Coming soon: PDF export of the full player profile.")
+        try:
+            pdf_buffer = generate_pdf_report(player_current, selected_player, selected_season, metrics)
+            st.download_button(
+                label="📥 Download PDF Report",
+                data=pdf_buffer,
+                file_name=f"{selected_player}_profile_{selected_season}.pdf",
+                mime="application/pdf"
+            )
+        except Exception as e:
+            st.error(f"Error generating PDF: {str(e)}")
 
-    with st.expander("📝 Add notes about this player"):
-        notes = st.text_area("Observation notes", placeholder="Strengths, weaknesses, potential...", height=150)
-        if st.button("Save notes"):
-            st.success("Notes saved (functionality to be implemented).")
+def generate_pdf_report(player_data, player_name, season, advanced_metrics):
+    """Generate PDF report for a player"""
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    story = []
+
+    # Title
+    title_style = ParagraphStyle(
+        'CustomTitle',
+        parent=styles['Heading1'],
+        fontSize=24,
+        spaceAfter=30,
+        alignment=1  # Center
+    )
+    story.append(Paragraph(f"Player Profile: {player_name}", title_style))
+    story.append(Spacer(1, 12))
+
+    # Basic Info
+    basic_info = [
+        ['Team:', player_data.get('team', 'N/A')],
+        ['Position:', player_data.get('pos', 'N/A')],
+        ['Season:', str(season)],
+        ['Games Played:', str(player_data.get('games_played', 'N/A'))]
+    ]
+
+    basic_table = Table(basic_info, colWidths=[2*inch, 2*inch])
+    basic_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), colors.lightgrey),
+        ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+
+    story.append(Paragraph("Basic Information", styles['Heading2']))
+    story.append(basic_table)
+    story.append(Spacer(1, 12))
+
+    # Performance Stats
+    perf_data = [
+        ['Statistic', 'Value'],
+        ['Points/Game', f"{player_data.get('points_per_game', 0):.1f}"],
+        ['Rebounds/Game', f"{player_data.get('rebounds_per_game', 0):.1f}"],
+        ['Assists/Game', f"{player_data.get('assists_per_game', 0):.1f}"]
+    ]
+
+    perf_table = Table(perf_data, colWidths=[2*inch, 2*inch])
+    perf_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+
+    story.append(Paragraph("Performance Statistics", styles['Heading2']))
+    story.append(perf_table)
+    story.append(Spacer(1, 12))
+
+    # Advanced Metrics
+    adv_data = [['Metric', 'Value']]
+    for key, value in advanced_metrics.items():
+        adv_data.append([key, str(value)])
+
+    adv_table = Table(adv_data, colWidths=[2*inch, 2*inch])
+    adv_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+
+    story.append(Paragraph("Advanced Metrics", styles['Heading2']))
+    story.append(adv_table)
+
+    doc.build(story)
+    buffer.seek(0)
+    return buffer
 
 if __name__ == "__main__":
     main()

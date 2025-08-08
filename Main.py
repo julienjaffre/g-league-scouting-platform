@@ -73,7 +73,7 @@ with feature_col3:
     **📊 Data Integration**
     - G-League statistics
     - NBA performance data
-    - Real-time updates
+    - Contract information
     """)
 
 # Footer
